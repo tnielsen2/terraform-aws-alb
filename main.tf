@@ -30,8 +30,8 @@ resource "aws_security_group_rule" "http_ingress" {
   from_port         = "${var.http_port}"
   to_port           = "${var.http_port}"
   protocol          = "tcp"
-  cidr_blocks       = ["${var.http_ingress_cidr_blocks}"]
-  prefix_list_ids   = ["${var.http_ingress_prefix_list_ids}"]
+  cidr_blocks       = "${var.http_ingress_cidr_blocks}"
+  prefix_list_ids   = "${var.http_ingress_prefix_list_ids}"
   security_group_id = "${aws_security_group.default.id}"
 }
 
@@ -41,8 +41,8 @@ resource "aws_security_group_rule" "https_ingress" {
   from_port         = "${var.https_port}"
   to_port           = "${var.https_port}"
   protocol          = "tcp"
-  cidr_blocks       = ["${var.https_ingress_cidr_blocks}"]
-  prefix_list_ids   = ["${var.https_ingress_prefix_list_ids}"]
+  cidr_blocks       = "${var.https_ingress_cidr_blocks}"
+  prefix_list_ids   = "${var.https_ingress_prefix_list_ids}"
   security_group_id = "${aws_security_group.default.id}"
 }
 
@@ -63,7 +63,7 @@ resource "aws_lb" "default" {
   tags                             = "${module.default_label.tags}"
   internal                         = "${var.internal}"
   load_balancer_type               = "application"
-  security_groups                  = ["${compact(concat(var.security_group_ids, list(aws_security_group.default.id)))}"]
+  security_groups                  = "${compact(concat(var.security_group_ids, list(aws_security_group.default.id)))}"
   subnets                          = ["${var.subnet_ids}"]
   enable_cross_zone_load_balancing = "${var.cross_zone_load_balancing_enabled}"
   enable_http2                     = "${var.http2_enabled}"
